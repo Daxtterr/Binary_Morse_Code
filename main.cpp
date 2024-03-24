@@ -1,69 +1,25 @@
-#include <iostream>
-#include <unordered_map>
-#include <vector>
-#include <sstream>
+/* 
+ * This module contains the main function of this program.
+ *
+ * This file calls the header file as well as the file containing
+ * the helper functions and demonstrates Object-Oriented Programming
+ */
 
-using namespace std;
+/* Include header files */
+#include "header.h"
+#include "helpers.cpp"
 
-struct Node {
-    char data;
-    Node* left;
-    Node* right;
-    Node(char d) : data(d), left(nullptr), right(nullptr) {}
-};
-
-Node* buildMorseCodeTree(const unordered_map<char, string>& mapping) {
-    Node* root = new Node('*');
-    for (const auto& pair : mapping) {
-        Node* node = root;
-        for (char symbol : pair.second) {
-            if (symbol == '.') {
-                if (!node->left) node->left = new Node('\0');
-                node = node->left;
-            } else if (symbol == '-') {
-                if (!node->right) node->right = new Node('\0');
-                node = node->right;
-            }
-        }
-        node->data = pair.first;
-    }
-    return root;
-}
-
-string encodeMessage(const string& message, const unordered_map<char, string>& mapping) {
-    stringstream ss;
-    for (char c : message) {
-        if (mapping.count(tolower(c))) {
-            ss << mapping.at(tolower(c)) << " ";
-        } else if (c == ' ') {
-            ss << "/ ";
-        }
-    }
-    return ss.str();
-}
-
-string decodeMessage(const string& encodedMessage, Node* root) {
-    stringstream ss(encodedMessage);
-    string token, decodedMessage;
-    Node* node = root;
-    while (ss >> token) {
-        if (token == "/") {
-            decodedMessage += ' ';
-        } else {
-            for (char symbol : token) {
-                if (symbol == '.') {
-                    node = node->left;
-                } else if (symbol == '-') {
-                    node = node->right;
-                }
-            }
-            decodedMessage += node->data;
-            node = root;
-        }
-    }
-    return decodedMessage;
-}
-
+/*
+ * Module: main
+ * Author: Aimuel Emmanuel
+ * Date: 2024-03-22
+ *
+ * Purpose: Point of execution in this program
+ * Parameter: None
+ * Precondition: None
+ * \return 0 if no errors, otherwise 1
+ * Side effect: None
+ */ 
 int main() {
     unordered_map<char, string> morseCodeMapping = {
         {'a', ".-"}, {'b', "-..."}, {'c', "-.-."}, {'d', "-.."}, {'e', "."},
