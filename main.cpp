@@ -32,15 +32,27 @@ int main() {
 
     Node* root = buildMorseCodeTree(morseCodeMapping);
 
-    string message;
-    cout << "Enter the message to be encoded: ";
-    getline(cin, message);
+    bool continueEncoding = true;
+    while (continueEncoding) {
+        string message;
+        cout << "Enter the message to be encoded: ";
+        getline(cin, message);
 
-    string encodedMessage = encodeMessage(message, morseCodeMapping);
-    cout << "Encoded message: " << encodedMessage << endl;
+        string encodedMessage = encodeMessage(message, morseCodeMapping);
+        cout << "Encoded message: " << encodedMessage << endl;
 
-    string decodedMessage = decodeMessage(encodedMessage, root);
-    cout << "Decoded message: " << decodedMessage << endl;
+        string decodedMessage = decodeMessage(encodedMessage, root);
+        cout << "Decoded message: " << decodedMessage << endl;
+
+        cout << "Do you want to encode another message? (y/n): ";
+        char choice;
+        cin >> choice;
+        cin.ignore(); // Ignore the newline character left in the input buffer
+        if (choice != 'y' && choice != 'Y') {
+            continueEncoding = false;
+        }
+    }
 
     return 0;
 }
+
